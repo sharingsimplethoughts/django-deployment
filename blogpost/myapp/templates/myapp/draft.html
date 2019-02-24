@@ -1,0 +1,8 @@
+{% extends 'myapp/base.html' %}
+{% block body_block %}
+{% for post in post_list %}
+  <p>Author: {{ post.author }}</p>
+  Title: <a href="{% url 'myapp:detail' pk=post.pk %}">{{ post.title }}</a>
+  <p>Created on: {{post.published_date}}</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'myapp/base.html' %}
+{% block body_block %}
+<h1>Hi, Welcome to My Tech Blog Home Page</h1>
+{% if post_list %}
+  <h2>All Posts</h2>
+  {% for post in post_list %}
+    <h3>Title: <a href="{% url 'myapp:detail' pk=post.pk %}">{{post.title}}</a></h3>
+    <h5>- by: {{post.author}} on- {{post.published_date}}</h5>
+    <h5>Comments: {{post.comments.status.count}}</h5><br>
+  {% endfor %}
+{% endif %}
+{% endblock %}

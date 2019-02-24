@@ -1,0 +1,36 @@
+{% extends 'myapp/base.html' %}
+{% block body_block %}
+  <p>Author: {{postdetail.author}}</p>
+  <p>Title: {{postdetail.title}}</p>
+  <p>Published on: {{postdetail.published_date}}</p>
+  <p>Text: {{postdetail.text}}</p>
+
+  {% if user.is_authenticated %}
+    {% if user.username == postdetail.author.username %}
+      <a href="{% url 'myapp:edit' pk=postdetail.pk %}">edit</a>
+      <a href="{% url 'myapp:delete' pk=postdetail.pk %}">delete</a>
+      {% if postdetail.status == False %}
+        <a href="{% url 'myapp:publish' pk=postdetail.pk %}">publish</a>
+      {% endif %}
+    {% endif %}
+    <!-- create comment -->
+    <a href="{% url 'myapp:comment' pk=postdetail.pk %}">Comment</a>
+  {% endif %}
+  <p>------------------------------</p>
+  <!-- show comment -->
+  {% for com in postdetail.comments.all %}
+    {% if com.status or user.username == postdetail.author.username %}
+      <p>{{com.text}}</p>
+      <p>Posted by - {{com.author}}</p>
+      <p>On - {{com.comment_published_date}}</p>
+      {% if user.username == postdetail.author.username %}
+        {% if not com.status %}
+          <a href="{% url 'myapp:approvecom' pk=com.pk %}">Approve Comment</a> OR
+        {% endif %}
+        <a href="{% url 'myapp:deletecom' pk=com.pk %}">Delete Comment</a>
+      {% endif %}
+    {% endif %}
+    {% empty %}
+      <p>No Comments available</p>
+  {% endfor %}
+{% endblock %}
